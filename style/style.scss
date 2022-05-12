@@ -1,0 +1,80 @@
+body {
+  min-height: 100vh;
+  background: rgb(25,57,54);
+  background: linear-gradient(17deg, rgba(25,57,54,1) 0%, rgba(48,144,135,1) 100%);
+}
+
+button.button i {
+  margin-right: 5px;
+}
+
+.btn-container {
+  margin-bottom: 45px;
+}
+
+.wrapper {
+  padding: 5px 15px;
+}
+
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1.page-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #FFF;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.tubes-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 30px 0;
+}
+
+.tube {
+  border: solid 1px #fff;
+  border-top: none;
+  margin: 0 30px 75px;
+  width: 55px;
+  border-radius: 0 0 10px 10px;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: -7.5px;
+    border: solid 1px #fff;
+    border-bottom: none;
+    border-radius: 7.5px;
+    height: 15px;
+    width: calc(100% + 15px);
+  }
+
+  &:hover {
+    &:not(.edit) {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+  }
+}
+
+.ball {
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  margin: 10px auto;
+
+  &:not(.null) {
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+  }
+
+  &.edit:hover {
+    cursor: pointer;
+  }
+}

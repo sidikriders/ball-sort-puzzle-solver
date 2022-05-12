@@ -1,0 +1,61 @@
+.modal-edit-tube .modal-content {
+  background: #fff;
+  border-radius: 15px;
+  padding: 15px;
+
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 30px;
+  }
+}
+
+.tube-editor {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto 15px;
+
+  .balls-selections {
+    width: 165px;
+    display: flex;
+    flex-wrap: wrap;
+
+    button.button {
+      margin: 0 15px 15px 0;
+      width: 40px;
+      padding: 0;
+      border-radius: 10px;
+
+      .ball {
+        width: 20px;
+        height: 20px
+      }
+    }
+  }
+
+  .tube-container {
+    display: flex;
+    align-items: center;
+    background: rgb(25,57,54);
+    background: linear-gradient(17deg, rgba(25,57,54,1) 0%, rgba(48,144,135,1) 100%);
+    align-items: center;
+    padding: 0 50px;
+    border-radius: 15px;
+    margin-left: 60px;
+
+    .tube {
+      margin: 0;
+    }
+  }
+}
+
+.edit-tube-action {
+  text-align: right;
+  width: 380px;
+  margin: 30px auto 0px;
+
+  button.button {
+    margin-left: 15px;
+  }
+}

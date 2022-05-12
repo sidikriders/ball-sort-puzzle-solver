@@ -1,0 +1,73 @@
+.modal-edit-tube .modal-content {
+  background: #fff;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.modal-edit-tube .modal-content h3 {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 30px;
+}
+
+.tube-editor {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto 15px;
+}
+
+.tube-editor .balls-selections {
+  width: 165px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.tube-editor .balls-selections button.button {
+  margin: 0 15px 15px 0;
+  width: 40px;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.tube-editor .balls-selections button.button .ball {
+  width: 20px;
+  height: 20px;
+}
+
+.tube-editor .tube-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: #193936;
+  background: linear-gradient(17deg, #193936 0%, #309087 100%);
+  align-items: center;
+  padding: 0 50px;
+  border-radius: 15px;
+  margin-left: 60px;
+}
+
+.tube-editor .tube-container .tube {
+  margin: 0;
+}
+
+.edit-tube-action {
+  text-align: right;
+  width: 380px;
+  margin: 30px auto 0px;
+}
+
+.edit-tube-action button.button {
+  margin-left: 15px;
+}
+/*# sourceMappingURL=modal-tube-editor.css.map */

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACE,MADI,AAAA,OAAO,AACV,WAAW,CAAC;EACX,gBAAgB,EAAE,OAAkB;CACrC;;AAHH,AAKE,MALI,AAAA,OAAO,AAKV,UAAU,CAAC;EACV,gBAAgB,EAAE,OAAgB;CACnC",
+    "sources": [
+        "custom-bulma-color.scss"
+    ],
+    "names": [],
+    "file": "custom-bulma-color.css"
+}

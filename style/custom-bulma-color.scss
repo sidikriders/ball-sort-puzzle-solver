@@ -1,0 +1,9 @@
+button.button {
+  &.is-primary {
+    background-color: rgba(48,144,135,1);
+  }
+
+  &.is-danger {
+    background-color: rgb(173, 40, 10);
+  }
+}

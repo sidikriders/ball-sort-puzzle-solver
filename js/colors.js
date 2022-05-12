@@ -1,0 +1,15 @@
+const COLORS = {
+  'dark-green': '#045414',
+  'rose-gold': '#fad6c5',
+  'green': '#32cc16',
+  'pink': '#eb8fda',
+  'red': '#fa2d2d',
+  'brown': '#ab460c',
+  'orange': '#f59105',
+  'blue-light': '#29e0e3',
+  'white': '#fff',
+  'yellow': '#fcdb05',
+  'blue-green': '#02543d',
+  'blue': '#296de3',
+  'purple': '#39075c',
+}

@@ -90,6 +90,8 @@ h1.page-title {
   height: 35px;
   width: 35px;
   margin: 10px auto;
+  transform: translateY(0);
+  transition: transform .3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &:not(.null) {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);

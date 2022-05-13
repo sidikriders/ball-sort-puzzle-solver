@@ -1,13 +1,25 @@
+const startingTubes = puzzle1;
+
 const Container = () => {
   const [tubeSize, setTubeSize] = React.useState(4);
-  const [tubes, setTubes] = React.useState([]);
+  const [tubes, setTubes] = React.useState(startingTubes);
   const [editTube, setEditTube] = React.useState({
     visible: false,
     tube: [],
     tubeIndex: -1,
   });
   const [editing, setEditing] = React.useState(false);
-  const [sideMenu, setSideMenu] = React.useState(true);
+  const [sideMenu, setSideMenu] = React.useState(false);
+
+  const [playing, setPlaying] = React.useState(false);
+  const [initialTubes, setInitialTubes] = React.useState([]);
+  const [undo, setUndo] = React.useState([]);
+  const [redo, setRedo] = React.useState([]);
+  const [activeTube, setActiveTube] = React.useState({
+    from: -1,
+    to: -1,
+    ball: "",
+  });
 
   const addTubeFromEditor = (balls) => {
     if (editTube.tubeIndex < 0) {
@@ -42,6 +54,33 @@ const Container = () => {
     console.log(str);
   };
 
+  const playSelectTube = (tube, idx) => {
+    const balls = tube.filter((x) => !!x);
+    if (activeTube.from < 0 && balls.length > 0) {
+      setActiveTube((at) => ({
+        ...at,
+        from: idx,
+        ball: balls[0],
+      }));
+    } else if (idx === activeTube.from) {
+      setActiveTube((at) => ({
+        ...at,
+        from: -1,
+        ball: "",
+      }));
+    } else if (activeTube.to < 0) {
+      const emptyTube = tube.filter((b) => !!b).length === 0;
+      const sameColor = tube.find((b) => !!b) === activeTube.ball;
+      const haveSlot = tube.filter((b) => !!b).length > 0;
+
+      if (emptyTube || (sameColor && haveSlot)) {
+        setActiveTube((at) => ({ ...at, to: idx }));
+      } else {
+        setActiveTube((at) => ({ ...at, from: -1, ball: "" }));
+      }
+    }
+  };
+
   React.useEffect(() => {
     const htmlTag = document.querySelector("html");
     if (editTube.visible) {
@@ -50,6 +89,32 @@ const Container = () => {
       htmlTag.style.overflow = "";
     }
   }, [editTube.visible]);
+
+  // for animation ball change tubes
+  React.useEffect(() => {
+    if (activeTube.to >= 0) {
+      setTubes((ts) =>
+        ts.map((tube, idx) => {
+          if (idx === activeTube.from) {
+            const selectedBallIdx = tube.indexOf(activeTube.ball);
+            return tube.map((ball, ballIdx) =>
+              ballIdx === selectedBallIdx ? null : ball
+            );
+          }
+
+          if (idx === activeTube.to) {
+            const selectedBallIdx = tube.lastIndexOf(null);
+            return tube.map((ball, ballIdx) =>
+              ballIdx === selectedBallIdx ? activeTube.ball : ball
+            );
+          }
+
+          return tube;
+        })
+      );
+      setActiveTube({ from: -1, to: -1, ball: "" });
+    }
+  }, [activeTube.to]);
 
   return (
     <div className="wrapper">
@@ -67,10 +132,65 @@ const Container = () => {
         <h1 className="page-title">Ball Sort Puzzle Solver</h1>
         <div className="app-btn-container">
           <div className="left">
-            <button className="button is-primary">
-              <i className="fas fa-play"></i>
-              <span>Play Game</span>
-            </button>
+            {!playing ? (
+              <button
+                className="button is-primary"
+                onClick={() => {
+                  setPlaying(true);
+                  setInitialTubes(tubes);
+                }}
+              >
+                <i className="fas fa-play"></i>
+                <span>Play Game</span>
+              </button>
+            ) : (
+              <React.Fragment>
+                <button
+                  className="button is-danger"
+                  onClick={() => {
+                    const confirmStop = window.confirm(
+                      "Stopping your game will remove all proggress, Are you sure want to stop?"
+                    );
+                    if (confirmStop) {
+                      setPlaying(false);
+                      setTubes(initialTubes);
+                      setInitialTubes([]);
+                      setUndo([]);
+                      setRedo([]);
+                    }
+                  }}
+                >
+                  <i className="fas fa-ban"></i>
+                  <span>Stop</span>
+                </button>
+                <button
+                  className="button is-info"
+                  onClick={() => {
+                    const confirmReset = window.confirm(
+                      "Are you sure want to reset your game?"
+                    );
+                    if (confirmReset) {
+                      setUndo([]);
+                      setRedo([]);
+                      setTubes(initialTubes);
+                    }
+                  }}
+                >
+                  <i className="fas fa-undo"></i>
+                  <span>Reset</span>
+                </button>
+                {undo.length > 0 && (
+                  <button className="button">
+                    <i className="fas fa-caret-square-left"></i>
+                  </button>
+                )}
+                {redo.length > 0 && (
+                  <button className="button">
+                    <i className="fas fa-caret-square-right"></i>
+                  </button>
+                )}
+              </React.Fragment>
+            )}
           </div>
           <div className="right">
             <div className="side-menu">
@@ -119,6 +239,8 @@ const Container = () => {
               <Tube
                 balls={tube}
                 key={idx}
+                tubeSelected={activeTube.from === idx}
+                tubeReceive={activeTube.to === idx ? activeTube.ball : ""}
                 onClick={() => {
                   if (editing) {
                     setEditTube({
@@ -126,6 +248,10 @@ const Container = () => {
                       tube,
                       tubeIndex: idx,
                     });
+                  }
+
+                  if (playing) {
+                    playSelectTube(tube, idx);
                   }
                 }}
               />

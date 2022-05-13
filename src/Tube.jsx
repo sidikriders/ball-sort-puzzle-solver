@@ -1,16 +1,24 @@
 const Ball = (props) => {
-  const { color, editor, onClick } = props;
+  const { color, editor, onClick, levitation } = props;
   return (
     <div
       onClick={() => !!onClick && onClick()}
       className={"ball" + (!color ? " null" : "") + (editor ? " edit" : "")}
-      style={{ backgroundColor: color }}
+      style={{
+        backgroundColor: color,
+        transform: `translateY(${levitation || 0}px)`,
+      }}
     />
   );
 };
 
 const Tube = (props) => {
-  const { balls, editor, onBallClick, onClick } = props;
+  const { balls, editor, onBallClick, onClick, tubeSelected } = props;
+
+  // tubeSelected levitation
+  const firstBallIdx = balls.findIndex((b) => !!b);
+  const levitation = -1 * (70 + firstBallIdx * 45);
+
   return (
     <div
       className={"tube" + (editor ? " edit" : "")}
@@ -23,6 +31,7 @@ const Tube = (props) => {
             key={idx}
             editor={editor}
             onClick={() => !!onBallClick && onBallClick(idx)}
+            levitation={tubeSelected && idx === firstBallIdx ? levitation : 0}
           />
         );
       })}

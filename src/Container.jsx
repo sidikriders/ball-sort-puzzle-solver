@@ -90,6 +90,19 @@ const Container = () => {
     }
   };
 
+  const checkTubeIsCompleted = (tuTubes) => {
+    const haveIncorrectTube =
+      tuTubes.filter((tube) => {
+        const emptyTube = tube.filter((ball) => !!ball).length === 0;
+        const sameColor =
+          tube.filter((ball, idx, arr) => arr.indexOf(ball) !== 0).length === 0;
+
+        return !emptyTube && !sameColor;
+      }).length > 0;
+
+    return !haveIncorrectTube;
+  };
+
   React.useEffect(() => {
     const htmlTag = document.querySelector("html");
     if (editTube.visible) {
@@ -122,6 +135,11 @@ const Container = () => {
         });
       });
       setActiveTube((at) => ({ ...at, from: -1, ball: "" }));
+    } else {
+      const isFinish = checkTubeIsCompleted(tubes);
+      if (isFinish) {
+        window.alert("Perfect!!");
+      }
     }
   }, [activeTube.to]);
 

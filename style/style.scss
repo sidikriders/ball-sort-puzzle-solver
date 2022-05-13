@@ -8,8 +8,12 @@ button.button i {
   margin-right: 5px;
 }
 
-.btn-container {
-  margin-bottom: 45px;
+.app-btn-container {
+  margin-bottom: 60px;
+
+  button.button {
+    margin-left: 15px;
+  }
 }
 
 .wrapper {

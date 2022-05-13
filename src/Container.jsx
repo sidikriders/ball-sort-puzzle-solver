@@ -61,37 +61,49 @@ const Container = () => {
         onClose={() => setEditTube((et) => ({ ...et, visible: false }))}
         size={tubeSize}
         saveTube={(balls) => addTubeFromEditor(balls)}
+        deleteTube={(tubeIndex) => {
+          setTubes((t) => t.filter((x, idx) => idx !== tubeIndex));
+          setEditTube((et) => ({ ...et, visible: false }));
+        }}
       />
       <div className="content-wrapper">
         <h1 className="page-title">Ball Sort Puzzle Solver</h1>
         <div className="app-btn-container">
-          <button
-            className="button is-primary"
-            onClick={() =>
-              setEditTube({
-                visible: true,
-                tube: Array(tubeSize).fill(null),
-                tubeIndex: -1,
-              })
-            }
-          >
-            <i className="fas fa-plus"></i>
-            <span>Add Tube</span>
-          </button>
-          {!editing ? (
-            <button className="button" onClick={() => setEditing(true)}>
-              <i className="fas fa-edit"></i>
-              <span>Edit Tubes</span>
+          <div className="left">
+            <button className="button is-primary">
+              <i className="fas fa-play"></i>
+              <span>Play Game</span>
             </button>
-          ) : (
+          </div>
+          <div className="right">
             <button
-              className="button is-success"
-              onClick={() => setEditing(false)}
+              className="button is-primary"
+              onClick={() =>
+                setEditTube({
+                  visible: true,
+                  tube: Array(tubeSize).fill(null),
+                  tubeIndex: -1,
+                })
+              }
             >
-              <i className="fas fa-check"></i>
-              <span>Save Tubes</span>
+              <i className="fas fa-plus"></i>
+              <span>Add Tube</span>
             </button>
-          )}
+            {!editing ? (
+              <button className="button" onClick={() => setEditing(true)}>
+                <i className="fas fa-edit"></i>
+                <span>Edit Tubes</span>
+              </button>
+            ) : (
+              <button
+                className="button is-success"
+                onClick={() => setEditing(false)}
+              >
+                <i className="fas fa-check"></i>
+                <span>Save Tubes</span>
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="tubes-container">

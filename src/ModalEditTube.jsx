@@ -1,7 +1,8 @@
 /* global Ball:writeable, Tube:writeable */
 
 const ModalEditTube = (props) => {
-  const { visible, onClose, size, tube, tubeIndex, saveTube } = props;
+  const { visible, onClose, size, tube, tubeIndex, saveTube, deleteTube } =
+    props;
   const colors = Object.values(COLORS);
   const [balls, setBalls] = React.useState([]);
 
@@ -67,6 +68,14 @@ const ModalEditTube = (props) => {
           <button className="button is-danger" onClick={() => onClose()}>
             Cancel
           </button>
+          {tubeIndex >= 0 && (
+            <button
+              className="button is-warning"
+              onClick={() => deleteTube(tubeIndex)}
+            >
+              Remove Tube
+            </button>
+          )}
           <button className="button is-primary" onClick={() => saveTube(balls)}>
             {tubeIndex < 0 ? "Add New Tube" : "Update Tube"}
           </button>

@@ -11,6 +11,10 @@ const SideMenu = (props) => {
           <span>Edit Tubes</span>
         </button>
       )}
+      <button className="button" onClick={() => props.printTube()}>
+        <i className="fas fa-print"></i>
+        <span>Print Tubes</span>
+      </button>
     </div>
   );
 };

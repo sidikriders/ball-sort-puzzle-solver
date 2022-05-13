@@ -1,25 +1,6 @@
-const darkgreen = COLORS.darkgreen;
-const rosegold = COLORS.rosegold;
-const green = COLORS.green;
-const pink = COLORS.pink;
-const red = COLORS.red;
-const brown = COLORS.brown;
-const orange = COLORS.orange;
-const bluelight = COLORS.bluelight;
-const white = COLORS.white;
-const yellow = COLORS.yellow;
-const bluegreen = COLORS.bluegreen;
-const blue = COLORS.blue;
-const purple = COLORS.purple;
-const x = null;
-
 const Container = () => {
   const [tubeSize, setTubeSize] = React.useState(4);
-  const [tubes, setTubes] = React.useState([
-    [blue, blue, red, red],
-    [blue, blue, red, red],
-    [x, x, x, x],
-  ]);
+  const [tubes, setTubes] = React.useState([]);
   const [editTube, setEditTube] = React.useState({
     visible: false,
     tube: [],
@@ -44,6 +25,21 @@ const Container = () => {
     }
 
     setEditTube((et) => ({ ...et, visible: false }));
+  };
+
+  const colorToVariable = (color) => {
+    const varName = objectColorToVar[color];
+
+    return varName || "x";
+  };
+
+  const printTube = () => {
+    const parsedTubes = tubes.map(
+      (tube) => "[" + tube.map((ball) => colorToVariable(ball)).join(",") + "]"
+    );
+    const str = `[\n${parsedTubes.map((tube) => `  ${tube}`).join(",\n")}\n]`;
+
+    console.log(str);
   };
 
   React.useEffect(() => {
@@ -110,6 +106,7 @@ const Container = () => {
                     setEditing(true);
                     setSideMenu(false);
                   }}
+                  printTube={() => printTube()}
                 />
               )}
             </div>

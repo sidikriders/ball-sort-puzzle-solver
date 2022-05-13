@@ -1,7 +1,7 @@
 body {
   min-height: 100vh;
-  background: #193936;
-  background: linear-gradient(17deg, #193936 0%, #309087 100%);
+  background: #215652;
+  background: linear-gradient(17deg, #060c0b 0%, #215652 100%);
 }
 
 button.button i {

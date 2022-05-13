@@ -20,6 +20,7 @@
           flex-direction: column;
   -webkit-animation: dropFadeIn .3s ease;
           animation: dropFadeIn .3s ease;
+  z-index: 1;
 }
 
 .side-menu .menu-dropdown button.button {

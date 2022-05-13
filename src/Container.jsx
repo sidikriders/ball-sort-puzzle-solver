@@ -45,8 +45,8 @@ const Container = () => {
     return varName || "x";
   };
 
-  const printTube = () => {
-    const parsedTubes = tubes.map(
+  const printTubes = (theTubes) => {
+    const parsedTubes = (theTubes || tubes).map(
       (tube) => "[" + tube.map((ball) => colorToVariable(ball)).join(",") + "]"
     );
     const str = `[\n${parsedTubes.map((tube) => `  ${tube}`).join(",\n")}\n]`;
@@ -74,6 +74,15 @@ const Container = () => {
       const haveSlot = tube.filter((b) => !!b).length > 0;
 
       if (emptyTube || (sameColor && haveSlot)) {
+        // const move = {
+        //   from: activeTube.from,
+        //   to: idx,
+        //   balls: activeTube.balls,
+        // };
+
+        setUndo((u) => [...u, tubes]);
+        setRedo([]);
+
         setActiveTube((at) => ({ ...at, to: idx }));
       } else {
         setActiveTube((at) => ({ ...at, from: -1, ball: "" }));
@@ -93,8 +102,8 @@ const Container = () => {
   // for animation ball change tubes
   React.useEffect(() => {
     if (activeTube.to >= 0) {
-      setTubes((ts) =>
-        ts.map((tube, idx) => {
+      setTubes((ts) => {
+        return ts.map((tube, idx) => {
           if (idx === activeTube.from) {
             const selectedBallIdx = tube.indexOf(activeTube.ball);
             return tube.map((ball, ballIdx) =>
@@ -110,8 +119,8 @@ const Container = () => {
           }
 
           return tube;
-        })
-      );
+        });
+      });
       setActiveTube((at) => ({ ...at, from: -1, ball: "" }));
     }
   }, [activeTube.to]);
@@ -138,6 +147,8 @@ const Container = () => {
                 onClick={() => {
                   setPlaying(true);
                   setInitialTubes(tubes);
+                  setUndo([]);
+                  setRedo([]);
                 }}
               >
                 <i className="fas fa-play"></i>
@@ -180,13 +191,31 @@ const Container = () => {
                   <span>Reset</span>
                 </button>
                 {undo.length > 0 && (
-                  <button className="button">
+                  <button
+                    className="button"
+                    onClick={() => {
+                      const recentTubes = undo.slice(-1)[0];
+                      setRedo((r) => [...r, tubes]);
+                      setUndo((u) => u.slice(0, -1));
+                      setTubes(recentTubes);
+                    }}
+                  >
                     <i className="fas fa-caret-square-left"></i>
+                    <span>Undo</span>
                   </button>
                 )}
                 {redo.length > 0 && (
-                  <button className="button">
+                  <button
+                    className="button"
+                    onClick={() => {
+                      const recentTubes = redo.slice(-1)[0];
+                      setUndo((u) => [...u, tubes]);
+                      setRedo((r) => r.slice(0, -1));
+                      setTubes(recentTubes);
+                    }}
+                  >
                     <i className="fas fa-caret-square-right"></i>
+                    <span>Redo</span>
                   </button>
                 )}
               </React.Fragment>
@@ -226,7 +255,7 @@ const Container = () => {
                     setEditing(true);
                     setSideMenu(false);
                   }}
-                  printTube={() => printTube()}
+                  printTube={() => printTubes()}
                 />
               )}
             </div>

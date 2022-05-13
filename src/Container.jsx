@@ -112,7 +112,7 @@ const Container = () => {
           return tube;
         })
       );
-      setActiveTube({ from: -1, to: -1, ball: "" });
+      setActiveTube((at) => ({ ...at, from: -1, ball: "" }));
     }
   }, [activeTube.to]);
 
@@ -240,7 +240,7 @@ const Container = () => {
                 balls={tube}
                 key={idx}
                 tubeSelected={activeTube.from === idx}
-                tubeReceive={activeTube.to === idx ? activeTube.ball : ""}
+                tubeReceive={activeTube.to === idx}
                 onClick={() => {
                   if (editing) {
                     setEditTube({
@@ -253,6 +253,9 @@ const Container = () => {
                   if (playing) {
                     playSelectTube(tube, idx);
                   }
+                }}
+                readyToDrop={() => {
+                  setActiveTube((at) => ({ ...at, to: -1 }));
                 }}
               />
             );

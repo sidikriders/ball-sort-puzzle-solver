@@ -79,7 +79,6 @@ h1.page-title {
 
   &:hover {
     &:not(.edit) {
-      transform: scale(1.05);
       cursor: pointer;
     }
   }
@@ -90,7 +89,6 @@ h1.page-title {
   height: 35px;
   width: 35px;
   margin: 10px auto;
-  transform: translateY(0);
   transition: transform .3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &:not(.null) {

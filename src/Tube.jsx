@@ -1,5 +1,19 @@
 const Ball = (props) => {
-  const { color, editor, onClick, levitation } = props;
+  const { color, editor, onClick, levitation, dropping, readyToDrop } = props;
+  const [transition, setTransition] = React.useState("");
+
+  React.useEffect(() => {
+    if (dropping) {
+      setTransition("unset");
+      setTimeout(() => {
+        setTransition("");
+        if (readyToDrop) {
+          readyToDrop();
+        }
+      }, 100);
+    }
+  }, [dropping]);
+
   return (
     <div
       onClick={() => !!onClick && onClick()}
@@ -7,13 +21,22 @@ const Ball = (props) => {
       style={{
         backgroundColor: color,
         transform: `translateY(${levitation || 0}px)`,
+        transition,
       }}
     />
   );
 };
 
 const Tube = (props) => {
-  const { balls, editor, onBallClick, onClick, tubeSelected } = props;
+  const {
+    balls,
+    editor,
+    onBallClick,
+    onClick,
+    tubeSelected,
+    tubeReceive,
+    readyToDrop,
+  } = props;
 
   // tubeSelected levitation
   const firstBallIdx = balls.findIndex((b) => !!b);
@@ -31,7 +54,13 @@ const Tube = (props) => {
             key={idx}
             editor={editor}
             onClick={() => !!onBallClick && onBallClick(idx)}
-            levitation={tubeSelected && idx === firstBallIdx ? levitation : 0}
+            levitation={
+              (tubeSelected || tubeReceive) && idx === firstBallIdx
+                ? levitation
+                : 0
+            }
+            dropping={tubeReceive && idx === firstBallIdx}
+            readyToDrop={() => readyToDrop && readyToDrop()}
           />
         );
       })}

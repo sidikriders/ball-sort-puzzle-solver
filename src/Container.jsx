@@ -26,6 +26,7 @@ const Container = () => {
     tubeIndex: -1,
   });
   const [editing, setEditing] = React.useState(false);
+  const [sideMenu, setSideMenu] = React.useState(true);
 
   const addTubeFromEditor = (balls) => {
     if (editTube.tubeIndex < 0) {
@@ -76,33 +77,42 @@ const Container = () => {
             </button>
           </div>
           <div className="right">
-            <button
-              className="button is-primary"
-              onClick={() =>
-                setEditTube({
-                  visible: true,
-                  tube: Array(tubeSize).fill(null),
-                  tubeIndex: -1,
-                })
-              }
-            >
-              <i className="fas fa-plus"></i>
-              <span>Add Tube</span>
-            </button>
-            {!editing ? (
-              <button className="button" onClick={() => setEditing(true)}>
-                <i className="fas fa-edit"></i>
-                <span>Edit Tubes</span>
-              </button>
-            ) : (
-              <button
-                className="button is-success"
-                onClick={() => setEditing(false)}
-              >
-                <i className="fas fa-check"></i>
-                <span>Save Tubes</span>
-              </button>
-            )}
+            <div className="side-menu">
+              {editing ? (
+                <button
+                  className="button is-success"
+                  onClick={() => setEditing(false)}
+                >
+                  <i className="fas fa-check"></i>
+                  <span>Save Tubes</span>
+                </button>
+              ) : (
+                <button
+                  className="button"
+                  onClick={() => setSideMenu((sm) => !sm)}
+                >
+                  <i className={sideMenu ? "fas fa-times" : "fas fa-bars"}></i>
+                  <span>{sideMenu ? "Close" : "Menu"}</span>
+                </button>
+              )}
+              {sideMenu && (
+                <SideMenu
+                  addTube={() => {
+                    setEditTube({
+                      visible: true,
+                      tube: Array(tubeSize).fill(null),
+                      tubeIndex: -1,
+                    });
+                    setSideMenu(false);
+                  }}
+                  editing={editing}
+                  setEditing={() => {
+                    setEditing(true);
+                    setSideMenu(false);
+                  }}
+                />
+              )}
+            </div>
           </div>
         </div>
 

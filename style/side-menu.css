@@ -1,0 +1,29 @@
+.side-menu {
+  position: relative;
+}
+
+.side-menu .menu-dropdown {
+  position: absolute;
+  top: 53px;
+  right: 0;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-animation: dropFadeIn .3s ease;
+          animation: dropFadeIn .3s ease;
+}
+
+.side-menu .menu-dropdown button.button {
+  margin-left: 0;
+  margin-bottom: 15px;
+}
+/*# sourceMappingURL=side-menu.css.map */

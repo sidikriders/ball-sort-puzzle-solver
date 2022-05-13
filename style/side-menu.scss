@@ -1,0 +1,21 @@
+.side-menu {
+  position: relative;
+
+  .menu-dropdown {
+    position: absolute;
+    top: 53px;
+    right: 0;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    animation: dropFadeIn .3s ease;
+
+    button.button {
+      margin-left: 0;
+      margin-bottom: 15px;
+    }
+  }
+}

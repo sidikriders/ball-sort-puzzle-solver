@@ -54,8 +54,6 @@
   text-align: right;
   width: 380px;
   margin: 30px auto 0px;
-
-  button.button {
-    margin-left: 15px;
-  }
+  display: flex;
+  justify-content: space-around;
 }

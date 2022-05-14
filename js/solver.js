@@ -42,8 +42,10 @@ const generateNewPuzzles = (puzzle, puzzleHistory) => {
   return new Promise((resolve) => {
     // Select all top balls
     const topBalls = puzzle.reduce((arr, tube, idx) => {
+      const tubeCompleted =
+        tube.filter((ball) => tube.indexOf(ball) !== 0).length === 0;
       const firstBall = tube.find((ball) => !!ball);
-      if (firstBall) {
+      if (!tubeCompleted && !!firstBall) {
         return [...arr, { ball: firstBall, tubeIdx: idx }];
       }
 

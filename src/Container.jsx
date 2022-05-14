@@ -227,6 +227,16 @@ const Container = () => {
     }
   }, [activeTube.to]);
 
+  React.useEffect(() => {
+    if (autoPlay.auto) {
+      window.intervalPuzzle = setInterval(() => {
+        document.getElementById("solver-next-btn").click();
+      }, 500);
+    } else {
+      clearInterval(window.intervalPuzzle);
+    }
+  }, [autoPlay.auto]);
+
   return (
     <div className="wrapper">
       <ModalEditTube

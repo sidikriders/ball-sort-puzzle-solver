@@ -16,7 +16,11 @@ const AutoplayController = (props) => {
           )}
         </button>
 
-        <button className="button" onClick={() => props.nextStep()}>
+        <button
+          id="solver-next-btn"
+          className="button"
+          onClick={() => props.nextStep()}
+        >
           <i className="fas fa-angle-right"></i>
         </button>
       </div>

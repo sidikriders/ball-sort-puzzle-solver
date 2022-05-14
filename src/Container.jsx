@@ -1,4 +1,4 @@
-const startingTubes = puzzle25;
+const startingTubes = puzzle1;
 
 const Container = () => {
   const [tubeSize, setTubeSize] = React.useState(4);
@@ -20,6 +20,7 @@ const Container = () => {
     to: -1,
     ball: "",
   });
+  const [solving, setSolving] = React.useState(false);
 
   const addTubeFromEditor = (balls) => {
     if (editTube.tubeIndex < 0) {
@@ -273,6 +274,24 @@ const Container = () => {
                   }}
                   printTube={() => printTubes()}
                   closeSideMenu={() => setSideMenu(false)}
+                  isPlaying={playing}
+                  confirmSolving={async () => {
+                    const confirm = window.confirm(
+                      "Start solving current puzzle?"
+                    );
+                    if (confirm) {
+                      setSolving(true);
+                      const result = await solveTubesPuzzle(tubes);
+                      console.log("result");
+                      console.log(result);
+
+                      if (!result.solved) {
+                        window.alert("Failed!");
+                      }
+
+                      setSolving(false);
+                    }
+                  }}
                 />
               )}
             </div>
@@ -308,6 +327,11 @@ const Container = () => {
           })}
         </div>
       </div>
+
+      <ModalSolvingOnProgress
+        visible={solving}
+        closeModal={() => setSolving(false)}
+      />
     </div>
   );
 };

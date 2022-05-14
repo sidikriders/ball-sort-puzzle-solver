@@ -64,7 +64,7 @@ button.button i {
 h1.page-title {
   font-size: 32px;
   font-weight: 600;
-  color: #FFF;
+  color: #fff;
   text-align: center;
   margin: 30px 0;
 }
@@ -124,5 +124,24 @@ h1.page-title {
 
 .ball.edit:hover {
   cursor: pointer;
+}
+
+.modal-solving-on-progress .modal-content {
+  text-align: center;
+  padding: 15px;
+}
+
+.modal-solving-on-progress i.fas.fa-spinner {
+  -webkit-animation: rotating 2s infinite cubic-bezier(0.76, 0.03, 0.45, 0.98);
+          animation: rotating 2s infinite cubic-bezier(0.76, 0.03, 0.45, 0.98);
+  color: #fffffff2;
+  font-size: 60px;
+}
+
+.modal-solving-on-progress button.button.is-danger {
+  display: block;
+  margin: 15px auto;
+  -webkit-transform: translateX(102px);
+          transform: translateX(102px);
 }
 /*# sourceMappingURL=style.css.map */

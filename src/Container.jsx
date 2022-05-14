@@ -1,4 +1,38 @@
-const startingTubes = puzzle1;
+const startingTubes = puzzle25;
+
+// create moveObj based on current puzzle and target puzzle
+const createMoveObj = (puzzle, str) => {
+  const targetPuzzle = JSON.parse(str);
+
+  return targetPuzzle.reduce(
+    (obj, targetTube, idx) => {
+      const tube = puzzle[idx];
+
+      //  if the tubes is same, then not a "from" or a "to"
+      if (tube.join("") === targetTube.join("")) {
+        return obj;
+      }
+
+      // determine whether the tube is "from" or "to"
+      // if from then current puzzle's tube is longer than target puzzle's tube
+      const isFrom =
+        tube.filter(Boolean).length > targetTube.filter(Boolean).length;
+
+      if (isFrom) {
+        const findMovingBall = tube.find((ball, ballIdx) => {
+          const targetBall = targetTube[ballIdx];
+
+          return !!ball && !targetBall;
+        });
+
+        return { ...obj, ball: findMovingBall, from: idx };
+      } else {
+        return { ...obj, to: idx };
+      }
+    },
+    { from: -1, to: -1, ball: "" }
+  );
+};
 
 const Container = () => {
   const [tubeSize, setTubeSize] = React.useState(4);
@@ -21,6 +55,12 @@ const Container = () => {
     ball: "",
   });
   const [solving, setSolving] = React.useState(false);
+  const [autoPlay, setAutoPlay] = React.useState({
+    active: false,
+    steps: [],
+    stepHistory: [],
+    auto: false,
+  });
 
   const addTubeFromEditor = (balls) => {
     if (editTube.tubeIndex < 0) {
@@ -83,6 +123,7 @@ const Container = () => {
 
         setUndo((u) => [...u, tubes]);
         setRedo([]);
+        setAutoPlay({ active: false, steps: [], stepHistory: [], auto: false });
 
         setActiveTube((at) => ({ ...at, to: idx }));
       } else {
@@ -102,6 +143,48 @@ const Container = () => {
       }).length > 0;
 
     return !haveIncorrectTube;
+  };
+
+  const doAutoMove = (action) => {
+    const selectedHistory =
+      action === "next" ? autoPlay.steps[0] : autoPlay.stepHistory[0];
+
+    if (!selectedHistory) {
+      return;
+    }
+
+    if (action === "next") {
+      setAutoPlay((ap) => ({
+        ...ap,
+        steps: ap.steps.slice(1),
+        stepHistory: [selectedHistory, ...ap.stepHistory],
+      }));
+    } else {
+      setAutoPlay((ap) => ({
+        ...ap,
+        steps: [selectedHistory, ...ap.steps],
+        stepHistory: ap.stepHistory.slice(1),
+      }));
+    }
+
+    setTubes(JSON.parse(selectedHistory));
+    // const moveObj = createMoveObj(tubes, selectedHistory);
+    // console.log(moveObj);
+    // autoMove(moveObj);
+  };
+
+  const autoMove = (moveObj) => {
+    return new Promise((resolve) => {
+      const { from, to, ball } = moveObj;
+
+      setActiveTube((at) => ({ ...at, from, ball }));
+      setTimeout(() => {
+        setActiveTube((at) => ({ ...at, to }));
+        setTimeout(() => {
+          resolve();
+        }, 300);
+      }, 300);
+    });
   };
 
   React.useEffect(() => {
@@ -287,6 +370,14 @@ const Container = () => {
 
                       if (!result.solved) {
                         window.alert("Failed!");
+                      } else {
+                        window.alert("Solved!");
+                        setAutoPlay({
+                          active: true,
+                          steps: result.history,
+                          stepHistory: [],
+                          auto: false,
+                        });
                       }
 
                       setSolving(false);
@@ -297,6 +388,15 @@ const Container = () => {
             </div>
           </div>
         </div>
+
+        {autoPlay.active && (
+          <AutoplayController
+            auto={autoPlay.auto}
+            playPause={() => setAutoPlay((ap) => ({ ...ap, auto: !ap.auto }))}
+            prevStep={() => doAutoMove("prev")}
+            nextStep={() => doAutoMove("next")}
+          />
+        )}
 
         <div className="tubes-container">
           {tubes.map((tube, idx) => {

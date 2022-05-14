@@ -144,4 +144,28 @@ h1.page-title {
   -webkit-transform: translateX(102px);
           transform: translateX(102px);
 }
+
+.autoplay-controller {
+  margin: -20px 0 80px;
+}
+
+.autoplay-controller h3 {
+  text-align: center;
+  color: white;
+  font-size: 32px;
+  margin: 0 0 30px;
+}
+
+.autoplay-controller .btn-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.autoplay-controller .btn-container button.button {
+  margin: 0 7.5px;
+}
 /*# sourceMappingURL=style.css.map */

@@ -5,17 +5,23 @@ const solveTubesPuzzle = async (
 ) => {
   // check if puzzle solved or not
   if (isPuzzleSolved(puzzle)) {
-    return { solved: true, history: puzzleHistory };
+    return {
+      solved: true,
+      history: [...puzzleHistory.slice(1), formatPuzzleForHistory(puzzle)],
+    };
   }
 
   // if not solved
   // generate all new puzzles
   const np = await generateNewPuzzles(puzzle, puzzleHistory);
-  console.log(np);
+  // console.log(np);
 
   if (!np.puzzles.length) {
     if (!otherPuzzles.length) {
-      return { solved: false, history: np.history };
+      return {
+        solved: false,
+        history: [...np.history.slice(1), formatPuzzleForHistory(puzzle)],
+      };
     }
 
     return solveTubesPuzzle(
@@ -102,7 +108,10 @@ const moveTopBallToTube = (puzzle, topBall, targetTubeIdx) => {
 
 const formatPuzzleForHistory = (puzzle) => {
   return `[${puzzle
-    .map((tube) => `[${tube.map((ball) => ball || "null").join(", ")}]`)
+    .map(
+      (tube) =>
+        `[${tube.map((ball) => (!!ball ? `"${ball}"` : "null")).join(", ")}]`
+    )
     .join(",")}]`;
 };
 

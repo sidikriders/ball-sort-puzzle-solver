@@ -150,6 +150,8 @@ const Container = () => {
       action === "next" ? autoPlay.steps[0] : autoPlay.stepHistory[0];
 
     if (!selectedHistory) {
+      setAutoPlay((ap) => ({ ...ap, auto: false }));
+      window.alert("Finish Solving!");
       return;
     }
 

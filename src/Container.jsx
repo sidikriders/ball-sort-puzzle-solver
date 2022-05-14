@@ -1,4 +1,4 @@
-const startingTubes = puzzle1;
+const startingTubes = puzzle25;
 
 const Container = () => {
   const [tubeSize, setTubeSize] = React.useState(4);
@@ -47,7 +47,7 @@ const Container = () => {
 
   const printTubes = (theTubes) => {
     const parsedTubes = (theTubes || tubes).map(
-      (tube) => "[" + tube.map((ball) => colorToVariable(ball)).join(",") + "]"
+      (tube) => "[" + tube.map((ball) => colorToVariable(ball)).join(", ") + "]"
     );
     const str = `[\n${parsedTubes.map((tube) => `  ${tube}`).join(",\n")}\n]`;
 
@@ -260,20 +260,19 @@ const Container = () => {
               )}
               {sideMenu && (
                 <SideMenu
-                  addTube={() => {
+                  addTube={() =>
                     setEditTube({
                       visible: true,
                       tube: Array(tubeSize).fill(null),
                       tubeIndex: -1,
-                    });
-                    setSideMenu(false);
-                  }}
+                    })
+                  }
                   editing={editing}
                   setEditing={() => {
                     setEditing(true);
-                    setSideMenu(false);
                   }}
                   printTube={() => printTubes()}
+                  closeSideMenu={() => setSideMenu(false)}
                 />
               )}
             </div>

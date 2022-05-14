@@ -4,6 +4,10 @@ body {
   background: linear-gradient(17deg, #060c0b 0%, #215652 100%);
 }
 
+#root {
+  min-height: 100vh;
+}
+
 button.button i {
   margin-right: 5px;
 }

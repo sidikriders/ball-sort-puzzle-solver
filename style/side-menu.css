@@ -18,13 +18,23 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-animation: dropFadeIn .3s ease;
-          animation: dropFadeIn .3s ease;
+  -webkit-animation: dropFadeIn 0.3s ease;
+          animation: dropFadeIn 0.3s ease;
   z-index: 1;
 }
 
-.side-menu .menu-dropdown button.button {
-  margin-left: 0;
-  margin-bottom: 15px;
+.side-menu .menu-dropdown .menu ul.menu-list li {
+  border-bottom: solid 1px #c7c7c7;
+  min-width: 150px;
+}
+
+.side-menu .menu-dropdown .menu ul.menu-list li a {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 10px 5px;
+}
+
+.side-menu .menu-dropdown .menu ul.menu-list li a i.fas {
+  margin-right: 5px;
 }
 /*# sourceMappingURL=side-menu.css.map */

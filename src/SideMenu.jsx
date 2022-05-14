@@ -1,7 +1,7 @@
 const SideMenu = (props) => {
   return (
     <div className="menu-dropdown" onClick={() => props.closeSideMenu()}>
-      <button className="button is-primary" onClick={() => props.addTube()}>
+      {/* <button className="button is-primary" onClick={() => props.addTube()}>
         <i className="fas fa-plus"></i>
         <span>Add Tube</span>
       </button>
@@ -14,7 +14,47 @@ const SideMenu = (props) => {
       <button className="button" onClick={() => props.printTube()}>
         <i className="fas fa-print"></i>
         <span>Print Tubes</span>
-      </button>
+      </button> */}
+      <aside className="menu">
+        <p className="menu-label">Options</p>
+        <ul className="menu-list">
+          <li>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                props.addTube();
+              }}
+            >
+              <i className="fas fa-plus"></i>
+              <span>Add Tube</span>
+            </a>
+          </li>
+          {!props.editing && (
+            <li>
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.setEditing();
+                }}
+              >
+                <i className="fas fa-edit"></i>
+                <span>Edit Tubes</span>
+              </a>
+            </li>
+          )}
+          <li>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                props.printTube();
+              }}
+            >
+              <i className="fas fa-print"></i>
+              <span>Print Tubes</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
     </div>
   );
 };

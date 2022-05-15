@@ -196,6 +196,27 @@ const Container = () => {
     });
   };
 
+  const startSolving = async () => {
+    const solutions = await getBestSolution(tubes);
+    // // console.log("result");
+    console.log(solutions);
+    const firstSolution = solutions[0];
+    if (!firstSolution || !firstSolution.solved) {
+      window.alert("Failed!");
+    } else {
+      window.alert("Solved!");
+    }
+
+    setAutoPlay({
+      active: true,
+      steps: !!firstSolution ? firstSolution.history : [],
+      stepHistory: [],
+      auto: false,
+    });
+
+    setSolving(false);
+  };
+
   React.useEffect(() => {
     const htmlTag = document.querySelector("html");
     if (editTube.visible) {
@@ -245,6 +266,12 @@ const Container = () => {
       clearInterval(window.intervalPuzzle);
     }
   }, [autoPlay.auto]);
+
+  React.useEffect(() => {
+    if (solving) {
+      startSolving();
+    }
+  }, [solving]);
 
   return (
     <div className="wrapper">
@@ -377,30 +404,12 @@ const Container = () => {
                   printTube={() => printTubes()}
                   closeSideMenu={() => setSideMenu(false)}
                   isPlaying={playing}
-                  confirmSolving={async () => {
+                  confirmSolving={() => {
                     const confirm = window.confirm(
                       "Start solving current puzzle?"
                     );
                     if (confirm) {
                       setSolving(true);
-                      // const result = await solveTubesPuzzle(tubes);
-                      const solutions = await getBestSolution(tubes);
-                      // console.log("result");
-                      // console.log(result);
-                      const firstSolution = solutions[0];
-                      if (!firstSolution || !firstSolution.solved) {
-                        window.alert("Failed!");
-                      } else {
-                        window.alert("Solved!");
-                      }
-                      setAutoPlay({
-                        active: true,
-                        steps: !!firstSolution ? firstSolution.history : [],
-                        stepHistory: [],
-                        auto: false,
-                      });
-
-                      setSolving(false);
                     }
                   }}
                 />
@@ -420,12 +429,16 @@ const Container = () => {
               setAutoPlay((ap) => ({
                 ...ap,
                 auto: false,
-                steps: [...ap.stepHistory, tubes, ...ap.steps],
+                steps: [
+                  ...ap.stepHistory.slice(0, -1).reverse(),
+                  formatPuzzleForHistory(tubes),
+                  ...ap.steps,
+                ],
                 stepHistory: [],
               }));
 
               if (autoPlay.stepHistory.slice(-1)[0]) {
-                setTubes(autoPlay.stepHistory.slice(-1)[0]);
+                setTubes(JSON.parse(autoPlay.stepHistory.slice(-1)[0]));
               }
             }}
           />

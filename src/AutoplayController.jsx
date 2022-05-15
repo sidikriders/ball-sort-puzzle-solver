@@ -4,7 +4,11 @@ const AutoplayController = (props) => {
       <h3>Puzzle Solved</h3>
 
       <div className="btn-container">
-        <button className="button" onClick={() => props.prevStep()}>
+        <button
+          className="button"
+          style={{ display: props.auto ? "none" : "" }}
+          onClick={() => props.prevStep()}
+        >
           <i className="fas fa-angle-left"></i>
         </button>
 
@@ -19,6 +23,7 @@ const AutoplayController = (props) => {
         <button
           id="solver-next-btn"
           className="button"
+          style={{ display: props.auto ? "none" : "" }}
           onClick={() => props.nextStep()}
         >
           <i className="fas fa-angle-right"></i>

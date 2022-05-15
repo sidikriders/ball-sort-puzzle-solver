@@ -157,15 +157,20 @@ h1.page-title {
 }
 
 .autoplay-controller .btn-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  position: relative;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .autoplay-controller .btn-container button.button {
   margin: 0 7.5px;
+}
+
+.autoplay-controller .btn-container button.button.reset-btn {
+  position: absolute;
+  top: 0;
+  right: -70px;
 }
 /*# sourceMappingURL=style.css.map */

@@ -135,11 +135,18 @@ h1.page-title {
   }
 
   .btn-container {
-    display: flex;
-    justify-content: center;
+    position: relative;
+    width: fit-content;
+    margin: 0 auto;
 
     button.button {
       margin: 0 7.5px;
+    }
+
+    button.button.reset-btn {
+      position: absolute;
+      top: 0;
+      right: -70px;
     }
   }
 }

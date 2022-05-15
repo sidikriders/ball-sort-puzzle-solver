@@ -23,6 +23,14 @@ const AutoplayController = (props) => {
         >
           <i className="fas fa-angle-right"></i>
         </button>
+        {!!props.stepHistory.length && (
+          <button
+            className="button reset-btn is-danger"
+            onClick={() => props.resetAutoPlay()}
+          >
+            <i className="fas fa-undo"></i>
+          </button>
+        )}
       </div>
     </div>
   );

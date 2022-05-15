@@ -146,30 +146,37 @@ const Container = () => {
   };
 
   const doAutoMove = (action) => {
-    const selectedHistory =
-      action === "next" ? autoPlay.steps[0] : autoPlay.stepHistory[0];
-
-    if (!selectedHistory) {
-      setAutoPlay((ap) => ({ ...ap, auto: false }));
-      window.alert("Finish Solving!");
-      return;
-    }
-
     if (action === "next") {
+      const tubeStr = autoPlay.steps[0];
+      if (!tubeStr) {
+        setAutoPlay((ap) => ({ ...ap, auto: false }));
+        window.alert("Finish Solving!");
+        return;
+      }
+
       setAutoPlay((ap) => ({
         ...ap,
         steps: ap.steps.slice(1),
-        stepHistory: [selectedHistory, ...ap.stepHistory],
+        stepHistory: [formatPuzzleForHistory(tubes), ...ap.stepHistory],
       }));
-    } else {
+      setTubes(JSON.parse(tubeStr));
+    } else if (action === "prev") {
+      const tubeStr = autoPlay.stepHistory[0];
+
+      if (!tubeStr) {
+        setAutoPlay((ap) => ({ ...ap, auto: false }));
+        window.alert("Puzzle Resetted!");
+        return;
+      }
+
       setAutoPlay((ap) => ({
         ...ap,
-        steps: [selectedHistory, ...ap.steps],
+        steps: [formatPuzzleForHistory(tubes), ...ap.steps],
         stepHistory: ap.stepHistory.slice(1),
       }));
+      setTubes(JSON.parse(tubeStr));
     }
 
-    setTubes(JSON.parse(selectedHistory));
     // const moveObj = createMoveObj(tubes, selectedHistory);
     // console.log(moveObj);
     // autoMove(moveObj);
@@ -376,21 +383,22 @@ const Container = () => {
                     );
                     if (confirm) {
                       setSolving(true);
-                      const result = await solveTubesPuzzle(tubes);
-                      console.log("result");
-                      console.log(result);
-
-                      if (!result.solved) {
+                      // const result = await solveTubesPuzzle(tubes);
+                      const solutions = await getBestSolution(tubes);
+                      // console.log("result");
+                      // console.log(result);
+                      const firstSolution = solutions[0];
+                      if (!firstSolution || !firstSolution.solved) {
                         window.alert("Failed!");
                       } else {
                         window.alert("Solved!");
-                        setAutoPlay({
-                          active: true,
-                          steps: result.history,
-                          stepHistory: [],
-                          auto: false,
-                        });
                       }
+                      setAutoPlay({
+                        active: true,
+                        steps: !!firstSolution ? firstSolution.history : [],
+                        stepHistory: [],
+                        auto: false,
+                      });
 
                       setSolving(false);
                     }
@@ -407,6 +415,19 @@ const Container = () => {
             playPause={() => setAutoPlay((ap) => ({ ...ap, auto: !ap.auto }))}
             prevStep={() => doAutoMove("prev")}
             nextStep={() => doAutoMove("next")}
+            stepHistory={autoPlay.stepHistory}
+            resetAutoPlay={() => {
+              setAutoPlay((ap) => ({
+                ...ap,
+                auto: false,
+                steps: [...ap.stepHistory, tubes, ...ap.steps],
+                stepHistory: [],
+              }));
+
+              if (autoPlay.stepHistory.slice(-1)[0]) {
+                setTubes(autoPlay.stepHistory.slice(-1)[0]);
+              }
+            }}
           />
         )}
 

@@ -69,7 +69,8 @@ const generateNewPuzzles = (puzzle) => {
               sourceTube,
               tube,
               topBall.tubeIdx,
-              tubeIdx
+              tubeIdx,
+              puzzle
             );
 
             if (validMove) {
@@ -171,7 +172,8 @@ const checkIsMoveValid = (
   sourceTube,
   targetTube,
   sourceTubeIdx,
-  targetTubeIdx
+  targetTubeIdx,
+  puzzle
 ) => {
   const sourceBalls = sourceTube.filter(Boolean);
   const targetBalls = targetTube.filter(Boolean);
@@ -185,6 +187,18 @@ const checkIsMoveValid = (
     const onlyOneBall = sourceBalls.length === 1;
 
     if (uniform || onlyOneBall) {
+      return false;
+    }
+
+    // A.a USELESS MOVE IF TARGET IS EMPTY
+    // other tube with uniform color is exist
+    const otwucie = checkOtherTubeWithUniformColor(
+      sourceBalls[0],
+      sourceTubeIdx,
+      targetTubeIdx,
+      puzzle
+    );
+    if (otwucie) {
       return false;
     }
 
@@ -203,6 +217,13 @@ const checkIsMoveValid = (
   console.log(`diffColor: ${diffColor}`);
 
   if (sameTube || tubeIsFull || diffColor) {
+    return false;
+  }
+
+  // C.MOVE IS USELESS
+  // source and target is both uniform, but target is less than source
+  const wrongDirection = checkIfWrongDirection(sourceBalls, targetBalls);
+  if (wrongDirection) {
     return false;
   }
 
@@ -225,4 +246,32 @@ const solveOtherPuzzle = (others) => {
         ];
 
   return solveTubesPuzzle(puzzle, otherObj.history, newOthers);
+};
+
+const checkOtherTubeWithUniformColor = (
+  ball,
+  sourceTubeIdx,
+  targetTubeIdx,
+  puzzle
+) => {
+  const uniformTube = puzzle.find((tube, idx) => {
+    const sameColor = tube.find(Boolean) === ball;
+    const tubeIsUniform = tube
+      .filter(Boolean)
+      .every((ball, i, arr) => arr[0] === ball);
+    const notSourceOrTarget = idx !== sourceTubeIdx && idx !== targetTubeIdx;
+
+    return sameColor && tubeIsUniform && notSourceOrTarget;
+  });
+
+  return !!uniformTube;
+};
+
+const checkIfWrongDirection = (sourceBalls, targetBalls) => {
+  const sourceUniform = sourceBalls.every((ball, i, arr) => ball === arr[0]);
+  const targetUniform = targetBalls.every((ball, i, arr) => ball === arr[0]);
+
+  return (
+    sourceUniform && targetUniform && sourceBalls.length > targetBalls.length
+  );
 };

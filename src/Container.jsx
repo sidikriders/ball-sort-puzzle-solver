@@ -1,6 +1,6 @@
-const startingTubes = [];
-// const tubeSize = startingTubes.length;
-const tubeSize = 5;
+// const startingTubes = Array(14).fill(Array(5).fill(null));
+const startingTubes = puzzle395;
+const tubeSize = startingTubes[0].length;
 
 // create moveObj based on current puzzle and target puzzle
 const createMoveObj = (puzzle, str) => {
@@ -199,6 +199,7 @@ const Container = () => {
   };
 
   const startSolving = async () => {
+    window.forceStopSolving = false;
     const solution = await solveTubesPuzzle(tubes);
     console.log(solution);
 
@@ -477,7 +478,10 @@ const Container = () => {
 
       <ModalSolvingOnProgress
         visible={solving}
-        closeModal={() => setSolving(false)}
+        closeModal={() => {
+          window.forceStopSolving = true;
+          setSolving(false);
+        }}
       />
     </div>
   );

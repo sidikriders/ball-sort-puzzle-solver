@@ -1,6 +1,15 @@
 const solveTubesPuzzle = async (puzzle, puzzleHistory = [], others = []) => {
-  // check if puzzle solved or not
+  if (window.forceStopSolving) {
+    const forcedSolution = {
+      solved: false,
+      history: [...puzzleHistory.slice(1), formatPuzzleForHistory(puzzle)],
+    };
+
+    return forcedSolution;
+  }
+
   if (isPuzzleSolved(puzzle)) {
+    // check if puzzle solved or not
     const solutionObj = {
       solved: true,
       history: [...puzzleHistory.slice(1), formatPuzzleForHistory(puzzle)],

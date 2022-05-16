@@ -145,6 +145,14 @@ h1.page-title {
           transform: translateX(102px);
 }
 
+.modal-solving-on-progress p.solve-timer {
+  font-size: 24px;
+  margin: 15px 0;
+  font-weight: 600;
+  color: #fff;
+  opacity: 0.9;
+}
+
 .autoplay-controller {
   margin: -35px 0 80px;
 }

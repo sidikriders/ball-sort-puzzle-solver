@@ -197,11 +197,10 @@ const Container = () => {
   };
 
   const startSolving = async () => {
-    const solutions = await getBestSolution(tubes);
-    // // console.log("result");
-    console.log(solutions);
-    const firstSolution = solutions[0];
-    if (!firstSolution || !firstSolution.solved) {
+    const solution = await solveTubesPuzzle(tubes);
+    console.log(solution);
+
+    if (!solution.solved) {
       window.alert("Failed!");
     } else {
       window.alert("Solved!");
@@ -209,7 +208,7 @@ const Container = () => {
 
     setAutoPlay({
       active: true,
-      steps: !!firstSolution ? firstSolution.history : [],
+      steps: solution.history,
       stepHistory: [],
       auto: false,
     });

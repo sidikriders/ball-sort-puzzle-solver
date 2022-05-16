@@ -59,8 +59,6 @@ const generateNewPuzzles = (puzzle) => {
     setTimeout(() => {
       // Select all top balls
       const topBalls = createTopBalls(puzzle);
-      console.log("\n\ntopBalls");
-      console.log(topBalls);
 
       // generate possible moves for each top balls
       const movedBallsPuzzles = topBalls.reduce(
@@ -68,10 +66,6 @@ const generateNewPuzzles = (puzzle) => {
           // make new puzzle, where topBall moved to every possible tube
           const possiblePuzzles = puzzle.reduce((newPuzzles, tube, tubeIdx) => {
             const sourceTube = puzzle[topBall.tubeIdx];
-            console.log(`sourceTube | idx = ${topBall.tubeIdx}`);
-            console.log(sourceTube);
-            console.log(`targetTube | idx = ${tubeIdx}`);
-            console.log(tube);
 
             //  check if the move is valid or not
             const validMove = checkIsMoveValid(
@@ -91,8 +85,6 @@ const generateNewPuzzles = (puzzle) => {
 
             return newPuzzles;
           }, []);
-
-          console.log("-------top-ball-done----------");
 
           return [...puzzlesFromPreviousTopBalls, ...possiblePuzzles];
         },
@@ -191,7 +183,6 @@ const checkIsMoveValid = (
   if (et) {
     // source tube is not uniform, if completed must be also uniform
     const uniform = sourceBalls.every((ball, i, arr) => arr[0] === ball);
-    console.log(`uniform: ${uniform}`);
     // source tube have more than 1 ball
     const onlyOneBall = sourceBalls.length === 1;
 
@@ -217,13 +208,10 @@ const checkIsMoveValid = (
   // B. TARGET TUBE HAVE BALLS
   // not same tube
   const sameTube = sourceTubeIdx === targetTubeIdx;
-  console.log(`sameTube: ${sameTube}`);
   // target tube have empty slot
   const tubeIsFull = !!targetTube[0];
-  console.log(`tubeIsFull: ${tubeIsFull}`);
   // top ball same color
   const diffColor = targetTube.find(Boolean) !== sourceTube.find(Boolean);
-  console.log(`diffColor: ${diffColor}`);
 
   if (sameTube || tubeIsFull || diffColor) {
     return false;

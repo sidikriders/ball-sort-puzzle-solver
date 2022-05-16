@@ -1,4 +1,6 @@
-const startingTubes = puzzle25;
+const startingTubes = [];
+// const tubeSize = startingTubes.length;
+const tubeSize = 5;
 
 // create moveObj based on current puzzle and target puzzle
 const createMoveObj = (puzzle, str) => {
@@ -35,7 +37,7 @@ const createMoveObj = (puzzle, str) => {
 };
 
 const Container = () => {
-  const [tubeSize, setTubeSize] = React.useState(4);
+  // const [tubeSize, setTubeSize] = React.useState(4);
   const [tubes, setTubes] = React.useState(startingTubes);
   const [editTube, setEditTube] = React.useState({
     visible: false,

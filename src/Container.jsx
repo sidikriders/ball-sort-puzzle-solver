@@ -1,5 +1,5 @@
 // const startingTubes = Array(14).fill(Array(5).fill(null));
-const startingTubes = puzzle395;
+const startingTubes = puzzle25;
 const tubeSize = startingTubes[0].length;
 
 // create moveObj based on current puzzle and target puzzle
@@ -161,7 +161,9 @@ const Container = () => {
         steps: ap.steps.slice(1),
         stepHistory: [formatPuzzleForHistory(tubes), ...ap.stepHistory],
       }));
-      setTubes(JSON.parse(tubeStr));
+      // setTubes(JSON.parse(tubeStr));
+      const moveObj = createMoveObj(tubes, tubeStr);
+      autoMove(moveObj);
     } else if (action === "prev") {
       const tubeStr = autoPlay.stepHistory[0];
 
@@ -178,10 +180,6 @@ const Container = () => {
       }));
       setTubes(JSON.parse(tubeStr));
     }
-
-    // const moveObj = createMoveObj(tubes, selectedHistory);
-    // console.log(moveObj);
-    // autoMove(moveObj);
   };
 
   const autoMove = (moveObj) => {
@@ -424,8 +422,16 @@ const Container = () => {
           <AutoplayController
             auto={autoPlay.auto}
             playPause={() => setAutoPlay((ap) => ({ ...ap, auto: !ap.auto }))}
-            prevStep={() => doAutoMove("prev")}
-            nextStep={() => doAutoMove("next")}
+            prevStep={() => {
+              if (activeTube.from < 0 && activeTube.to < 0) {
+                doAutoMove("prev");
+              }
+            }}
+            nextStep={() => {
+              if (activeTube.from < 0 && activeTube.to < 0) {
+                doAutoMove("next");
+              }
+            }}
             stepHistory={autoPlay.stepHistory}
             resetAutoPlay={() => {
               setAutoPlay((ap) => ({

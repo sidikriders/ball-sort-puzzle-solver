@@ -198,7 +198,7 @@ const Container = () => {
 
   const startSolving = async () => {
     window.forceStopSolving = false;
-    const solution = await solveTubesPuzzle(tubes);
+    const solution = await solveTubesPuzzle(tubes, [], [], setTubes);
     console.log(solution);
 
     if (!solution.solved) {

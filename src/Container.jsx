@@ -1,5 +1,5 @@
-// const startingTubes = Array(14).fill(Array(5).fill(null));
-const startingTubes = puzzle25;
+// const startingTubes = Array(15).fill(Array(5).fill(null));
+const startingTubes = puzzle495;
 const tubeSize = startingTubes[0].length;
 
 // create moveObj based on current puzzle and target puzzle

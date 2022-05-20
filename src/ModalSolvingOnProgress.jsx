@@ -17,7 +17,11 @@ const ModalSolvingOnProgress = (props) => {
 
   React.useEffect(() => {
     if (solveTime >= 0) {
-      setTimeout(() => {
+      if (window.solveTimeout) {
+        clearTimeout(window.solveTimeout);
+      }
+
+      window.solveTimeout = setTimeout(() => {
         setSolveTime((st) => st + 1);
       }, 1000);
     }

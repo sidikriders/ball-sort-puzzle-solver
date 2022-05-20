@@ -61,8 +61,11 @@ const ModalSolvingOnProgress = (props) => {
 };
 
 const parseSecondsToStr = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
+  let minutes = Math.floor(seconds / 60);
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
   const leftSeconds = seconds % 60;
 
-  return `${("0" + minutes).slice(-2)}m ${("0" + leftSeconds).slice(-2)}s`;
+  return `${minutes}m ${("0" + leftSeconds).slice(-2)}s`;
 };

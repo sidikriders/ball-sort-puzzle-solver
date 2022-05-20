@@ -1,5 +1,14 @@
-const solveTubesPuzzle = async (puzzle, puzzleHistory = [], others = []) => {
+const solveTubesPuzzle = async (
+  puzzle,
+  puzzleHistory = [],
+  others = [],
+  setPuzzle,
+  allHistory = []
+) => {
   if (window.forceStopSolving) {
+    setPuzzle(window.originalPuzzle);
+    delete window.originalPuzzle;
+
     const forcedSolution = {
       solved: false,
       history: [...puzzleHistory.slice(1), formatPuzzleForHistory(puzzle)],
@@ -8,12 +17,20 @@ const solveTubesPuzzle = async (puzzle, puzzleHistory = [], others = []) => {
     return forcedSolution;
   }
 
+  if (!puzzleHistory.length) {
+    window.originalPuzzle = puzzle;
+  }
+  setPuzzle(puzzle);
+
   if (isPuzzleSolved(puzzle)) {
     // check if puzzle solved or not
     const solutionObj = {
       solved: true,
       history: [...puzzleHistory.slice(1), formatPuzzleForHistory(puzzle)],
     };
+
+    setPuzzle(window.originalPuzzle);
+    delete window.originalPuzzle;
 
     return solutionObj;
   }
@@ -24,16 +41,24 @@ const solveTubesPuzzle = async (puzzle, puzzleHistory = [], others = []) => {
 
   // filter new puzzle that already exist in history
   const filteredPuzzles = newPuzzles.filter(
-    (np) => !puzzleHistory.includes(formatPuzzleForHistory(np))
+    // (np) => !puzzleHistory.includes(formatPuzzleForHistory(np))
+    (np) => !allHistory.includes(formatPuzzleForHistory(np))
   );
 
   // new puzzle history
   const ph = [...puzzleHistory, formatPuzzleForHistory(puzzle)];
+  const newAllHistory = [...allHistory, formatPuzzleForHistory(puzzle)];
 
   // filtered puzzle is empty, then we get new puzle from others array of object
   if (!filteredPuzzles.length) {
+    window.buntuCounter = (window.buntuCounter || 0) + 1;
+    console.log(`buntu ${window.buntuCounter}x`);
+
     // if others is empty then puzzle is invalid
     if (!others.length) {
+      setPuzzle(window.originalPuzzle);
+      delete window.originalPuzzle;
+
       return {
         solved: false,
         history: ph.slice(1),
@@ -41,7 +66,7 @@ const solveTubesPuzzle = async (puzzle, puzzleHistory = [], others = []) => {
     }
 
     // solve used first puzlle from first object from others
-    return solveOtherPuzzle(others);
+    return solveOtherPuzzle(others, setPuzzle, newAllHistory);
   }
 
   // add others if filteredPuzzles.length > 1
@@ -51,7 +76,13 @@ const solveTubesPuzzle = async (puzzle, puzzleHistory = [], others = []) => {
       : others;
 
   // continue solve from first topBall
-  return solveTubesPuzzle(filteredPuzzles[0], ph, newOthers);
+  return solveTubesPuzzle(
+    filteredPuzzles[0],
+    ph,
+    newOthers,
+    setPuzzle,
+    newAllHistory
+  );
 };
 
 const generateNewPuzzles = (puzzle) => {
@@ -77,10 +108,18 @@ const generateNewPuzzles = (puzzle) => {
             );
 
             if (validMove) {
-              return [
-                ...newPuzzles,
-                moveTopBallToTube(puzzle, topBall, tubeIdx),
-              ];
+              const validMoveLvL2 = checkIsMoveValidLvl2(
+                topBall,
+                puzzle,
+                tubeIdx
+              );
+
+              if (validMoveLvL2) {
+                return [
+                  ...newPuzzles,
+                  moveTopBallToTube(puzzle, topBall, tubeIdx),
+                ];
+              }
             }
 
             return newPuzzles;
@@ -92,7 +131,7 @@ const generateNewPuzzles = (puzzle) => {
       );
 
       resolve(movedBallsPuzzles);
-    }, 0);
+    }, 50);
   });
 };
 
@@ -227,7 +266,7 @@ const checkIsMoveValid = (
   return true;
 };
 
-const solveOtherPuzzle = (others) => {
+const solveOtherPuzzle = (others, setPuzzle, allHistory) => {
   const otherObj = others[0];
   const puzzle = otherObj.puzzles[0];
 
@@ -242,7 +281,13 @@ const solveOtherPuzzle = (others) => {
           ...others.slice(1),
         ];
 
-  return solveTubesPuzzle(puzzle, otherObj.history, newOthers);
+  return solveTubesPuzzle(
+    puzzle,
+    otherObj.history,
+    newOthers,
+    setPuzzle,
+    allHistory
+  );
 };
 
 const checkOtherTubeWithUniformColor = (
@@ -271,4 +316,63 @@ const checkIfWrongDirection = (sourceBalls, targetBalls) => {
   return (
     sourceUniform && targetUniform && sourceBalls.length > targetBalls.length
   );
+};
+
+const checkIsMoveValidLvl2 = (topBall, puzzle, targetTubeIdx) => {
+  const sourceTube = puzzle[topBall.tubeIdx];
+  const targetTube = puzzle[targetTubeIdx];
+  const tubeLength = sourceTube.length;
+
+  // ball with same color that directly below top ball
+  const sameBalls = sourceTube.filter(Boolean).filter((el, idx, arr) => {
+    return arr[0] === el && arr.slice(0, idx).every((b) => b === arr[0]);
+  });
+
+  // allow if no same ball
+  if (sameBalls.length <= 1) {
+    return true;
+  }
+
+  // target cannot afford all same Balls
+  const targetTubeEmptySlot = targetTube.filter((ball) => !ball);
+  const stillLeft = targetTubeEmptySlot.length < sameBalls.length;
+  if (stillLeft) {
+    const puzzleContainEmptyTube =
+      puzzle.filter(
+        (tube) => tube.filter((ball) => !ball).length === tubeLength
+      ).length > 0;
+
+    if (puzzleContainEmptyTube) {
+      return false;
+    }
+
+    const allPossibleSlot = puzzle.filter((tube, idx) => {
+      // tube cannot same tube with topBall
+      if (idx === topBall.tubeIdx) {
+        return false;
+      }
+
+      // cannot full
+      if (tube.filter(Boolean) === tube.length) {
+        return false;
+      }
+
+      // tube top ball must same color
+      if (tube.find(Boolean) !== topBall.ball) {
+        return false;
+      }
+
+      return true;
+    });
+    const totalAllPossibleSlot = allPossibleSlot.reduce((total, tube) => {
+      const emptySlot = tube.findIndex(Boolean);
+      return total + emptySlot;
+    }, 0);
+
+    if (totalAllPossibleSlot < sameBalls.length) {
+      return false;
+    }
+  }
+
+  return true;
 };

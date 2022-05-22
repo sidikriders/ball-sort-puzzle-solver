@@ -114,3 +114,39 @@ const puzzle496 = [
   [x, x, x, x, x],
   [x, x, x, x, x],
 ];
+
+const puzzle497 = [
+  [yellow, pink, bluegreen, blue, pink],
+  [orange, pink, orange, yellow, green],
+  [rosegold, darkgreen, bluelight, bluelight, white],
+  [bluelight, rosegold, brown, green, red],
+  [purple, rosegold, red, rosegold, red],
+  [yellow, blue, green, white, brown],
+  [pink, bluegreen, purple, darkgreen, yellow],
+  [rosegold, white, darkgreen, bluegreen, red],
+  [yellow, purple, bluelight, bluegreen, bluegreen],
+  [blue, white, brown, brown, orange],
+  [blue, darkgreen, red, brown, purple],
+  [orange, green, orange, blue, darkgreen],
+  [white, purple, pink, green, bluelight],
+  [x, x, x, x, x],
+  [x, x, x, x, x],
+];
+
+const puzzle425 = [
+  [orange, yellow, purple, rosegold, bluelight],
+  [darkgreen, brown, pink, orange, darkgreen],
+  [purple, bluegreen, pink, purple, yellow],
+  [blue, brown, pink, red, brown],
+  [bluelight, green, bluelight, orange, orange],
+  [red, green, purple, bluelight, yellow],
+  [darkgreen, orange, pink, white, bluegreen],
+  [blue, bluelight, green, rosegold, rosegold],
+  [bluegreen, white, bluegreen, brown, blue],
+  [brown, white, white, rosegold, pink],
+  [yellow, yellow, darkgreen, blue, rosegold],
+  [blue, bluegreen, white, red, purple],
+  [green, red, darkgreen, red, green],
+  [x, x, x, x, x],
+  [x, x, x, x, x],
+];

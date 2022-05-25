@@ -150,3 +150,21 @@ const puzzle425 = [
   [x, x, x, x, x],
   [x, x, x, x, x],
 ];
+
+const puzzle504 = [
+  [rosegold, yellow, yellow, yellow, blue],
+  [brown, darkgreen, bluelight, green, green],
+  [blue, orange, orange, bluegreen, green],
+  [red, pink, pink, blue, red],
+  [brown, darkgreen, bluegreen, blue, orange],
+  [darkgreen, red, rosegold, bluegreen, bluelight],
+  [red, bluegreen, brown, yellow, darkgreen],
+  [brown, purple, red, bluelight, bluegreen],
+  [rosegold, pink, green, purple, purple],
+  [green, white, blue, bluelight, brown],
+  [white, purple, bluelight, orange, pink],
+  [white, orange, darkgreen, rosegold, purple],
+  [pink, white, rosegold, yellow, white],
+  [x, x, x, x, x],
+  [x, x, x, x, x],
+];
